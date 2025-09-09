@@ -1,4 +1,8 @@
-package AlgoritmosOrdenacao;
+package ManipulacaoArquivo;
+
+import AlgoritmosOrdenacao.Item; 
+import AlgoritmosOrdenacao.Ordenar;
+import AlgoritmosOrdenacao.Resultado;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -38,12 +42,10 @@ public class ManipularArquivo {
 
     private static int tamArquivo(String nomeArquivo) {
         int cont = 0;
-
         try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))) {
             while ((reader.readLine()) != null) {
                 cont++;
             }
-
         } catch (IOException e) {
             return 0;
         }
@@ -57,12 +59,10 @@ public class ManipularArquivo {
         try (BufferedReader rd = new BufferedReader(new FileReader(nomeArquivo))) {
             String linha;
             int i = 0;
-
             while ((linha = rd.readLine()) != null) {
                 numeros[i] = Integer.parseInt(linha);
                 i++;
             }
-
         } catch (IOException e) {
             erro += e.getMessage();
         }
@@ -72,7 +72,6 @@ public class ManipularArquivo {
         } else {
             return erro;
         }
-
     }
 
     public static String ordenarArquivo(String nomeArquivo, String tipoOrdenacao) {
@@ -92,17 +91,28 @@ public class ManipularArquivo {
                 itens[j] = new Item(numeros[j]);
             }
 
-            Ordenar ord = new Ordenar(itens, itens.length);
-
+            Resultado resultado;
             switch (tipoOrdenacao.toLowerCase()) {
+                case "id":
+                    resultado = Ordenar.insercaoDireta(itens);
+                    break;
                 case "sd":
-                    ord.selecaoDireta();
+                    resultado = Ordenar.selecaoDireta(itens);
+                    break;
+                case "bs":
+                    resultado = Ordenar.bubbleSort(itens);
+                    break;
+                case "ss":
+                    resultado = Ordenar.shakerSort(itens);
+                    break;
+                case "sh":
+                    resultado = Ordenar.shellSort(itens);
                     break;
                 case "hs":
-                    ord.heapSort();
+                    resultado = Ordenar.heapSort(itens);
                     break;
-                case "id":
-                    ord.insercaoDireta();
+                case "qs":
+                    resultado = Ordenar.quickSort(itens);
                     break;
                 default:
                     return "Tipo de ordenação inválido!";
@@ -112,15 +122,15 @@ public class ManipularArquivo {
                 numeros[j] = itens[j].getChave();
             }
 
+            return toString(numeros) +
+                   "\nComparações: " + resultado.comparacoes +
+                   "\nMovimentações: " + resultado.movimentacoes +
+                   "\nTempo (ns): " + resultado.tempo;
+
         } catch (IOException e) {
             erro += e.getMessage();
         }
 
-        if (numeros.length > 0) {
-            return toString(numeros);
-        } else {
-            return erro;
-        }
+        return erro;
     }
-
 }
