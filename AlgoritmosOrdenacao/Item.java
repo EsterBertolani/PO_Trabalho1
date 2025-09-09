@@ -1,7 +1,7 @@
 package AlgoritmosOrdenacao;
 
 public class Item {
-	
+
 	private int chave;
 
 	public Item(int chave) {

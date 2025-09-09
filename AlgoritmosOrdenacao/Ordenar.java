@@ -18,7 +18,8 @@ public class Ordenar {
                     v[j + 1] = v[j];
                     movimentacoes++; // movimentação: deslocamento
                     j--;
-                } else break;
+                } else
+                    break;
             }
             v[j + 1] = temp;
             movimentacoes++; // movimentação: inserção do temp
@@ -139,7 +140,8 @@ public class Ordenar {
                         v[j] = v[j - h];
                         movimentacoes++; // movimentação: deslocamento
                         j -= h;
-                    } else break;
+                    } else
+                        break;
                 }
                 v[j] = temp;
                 movimentacoes++; // inserção
@@ -206,51 +208,52 @@ public class Ordenar {
         }
         v[i] = raiz;
         movimentacoes++; // reposiciona raiz
-        return new long[]{comparacoes, movimentacoes};
+        return new long[] { comparacoes, movimentacoes };
     }
 
     // ---------------- QUICK SORT ----------------
 
-public static Resultado quickSort(Item[] vetor) {
-    Item[] v = vetor.clone(); // Clona o vetor original para não alterá-lo
-    Resultado r = new Resultado(0, 0, 0); // Inicializa o objeto para armazenar resultados
-    long inicio = System.nanoTime(); // Marca o tempo de início
+    public static Resultado quickSort(Item[] vetor) {
+        Item[] v = vetor.clone(); // Clona o vetor original para não alterá-lo
+        Resultado r = new Resultado(0, 0, 0); // Inicializa o objeto para armazenar resultados
+        long inicio = System.nanoTime(); // Marca o tempo de início
 
-    quickSortRec(v, 0, v.length - 1, r); // Chamada recursiva
+        quickSortRec(v, 0, v.length - 1, r); // Chamada recursiva
 
-    long fim = System.nanoTime(); // Marca o tempo de fim
-    r.tempo = fim - inicio; // Calcula o tempo total
-    return r;
-}
+        long fim = System.nanoTime(); // Marca o tempo de fim
+        r.tempo = fim - inicio; // Calcula o tempo total
+        return r;
+    }
 
-private static void quickSortRec(Item[] v, int esq, int dir, Resultado r) {
-    int i = esq, j = dir;
-    int pivo = v[(i + j) / 2].getChave(); // Escolhe o pivô como o elemento do meio
+    private static void quickSortRec(Item[] v, int esq, int dir, Resultado r) {
+        int i = esq, j = dir;
+        int pivo = v[(i + j) / 2].getChave(); // Escolhe o pivô como o elemento do meio
 
-    do {
-        while (v[i].getChave() < pivo) {
-            r.comparacoes++; // Conta a comparação
-            i++;
-        }
-        while (v[j].getChave() > pivo) {
-            r.comparacoes++; // Conta a comparação
-            j--;
-        }
-        if (i <= j) {
-            // Troca os elementos
-            Item temp = v[i];
-            v[i] = v[j];
-            v[j] = temp;
-            r.movimentacoes += 3; // Conta como 3 movimentações (leitura, leitura, escrita)
-            i++;
-            j--;
-        }
-    } while (i <= j);
+        do {
+            while (v[i].getChave() < pivo) {
+                r.comparacoes++; // Conta a comparação
+                i++;
+            }
+            while (v[j].getChave() > pivo) {
+                r.comparacoes++; // Conta a comparação
+                j--;
+            }
+            if (i <= j) {
+                // Troca os elementos
+                Item temp = v[i];
+                v[i] = v[j];
+                v[j] = temp;
+                r.movimentacoes += 3; // Conta como 3 movimentações (leitura, leitura, escrita)
+                i++;
+                j--;
+            }
+        } while (i <= j);
 
-    // Chamada recursiva para as subpartes
-    if (esq < j) quickSortRec(v, esq, j, r);
-    if (i < dir) quickSortRec(v, i, dir, r);
-}
-
+        // Chamada recursiva para as subpartes
+        if (esq < j)
+            quickSortRec(v, esq, j, r);
+        if (i < dir)
+            quickSortRec(v, i, dir, r);
+    }
 
 }

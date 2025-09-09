@@ -5,7 +5,7 @@ public class Resultado {
     public long movimentacoes;
     public long tempo;
 
-    public Resultado (long comp, long mov, long temp) {
+    public Resultado(long comp, long mov, long temp) {
         this.comparacoes = comp;
         this.movimentacoes = mov;
         this.tempo = temp;

@@ -1,6 +1,6 @@
 package ManipulacaoArquivo;
 
-import AlgoritmosOrdenacao.Item; 
+import AlgoritmosOrdenacao.Item;
 import AlgoritmosOrdenacao.Ordenar;
 import AlgoritmosOrdenacao.Resultado;
 
@@ -123,9 +123,9 @@ public class ManipularArquivo {
             }
 
             return toString(numeros) +
-                   "\nComparações: " + resultado.comparacoes +
-                   "\nMovimentações: " + resultado.movimentacoes +
-                   "\nTempo (ns): " + resultado.tempo;
+                    "\nComparações: " + resultado.comparacoes +
+                    "\nMovimentações: " + resultado.movimentacoes +
+                    "\nTempo (ns): " + resultado.tempo;
 
         } catch (IOException e) {
             erro += e.getMessage();
