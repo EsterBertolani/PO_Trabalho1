@@ -8,13 +8,12 @@ public class Main {
     public static void main(String[] args) {
         Scanner scan = new Scanner(System.in);
         int opcao = 0;
-        int escolha = 0;
         String nm = "";
 
         do {
             System.out.println("===== MENU PRINCIPAL =====\n"
                     + " 1. Gerar e Gravar Arquivo com Números\n"
-                    + " 2. Ler e Exibir Conteúdo de um Arquivo\n"
+                    + " 2. Executar Algoritmos de Ordenação\n"
                     + " 3. Sair\n"
                     + "==================================\n"
                     + "Escolha uma opção:");
@@ -37,79 +36,32 @@ public class Main {
                     System.out.println("Digite o nome do arquivo: ");
                     nm = scan.next();
 
-                    do {
-                        System.out.println("\n Ler e Exibir Conteúdo:\n"
-                                + "  1. Arquivo Desordenado\n"
-                                + "  2. Seleção Direta\n"
-                                + "  3. HeapSort\n"
-                                + "  4. Inserção Direta\n"
-                                + "  5. BubbleSort\n"
-                                + "  6. ShakerSort\n"
-                                + "  7. ShellSort\n"
-                                + "  8. QuickSort\n"
-                                + "  9. Voltar\n"
-                                + " ==================================\n"
-                                + " Escolha uma opção: ");
-                        escolha = scan.nextInt();
+                    System.out.println(ManipularArquivo.lerArquivo(nm));
 
-                        Resultado resultado;
-                        switch (escolha) {
-                            case 1:
-                                System.out.println(ManipularArquivo.lerArquivo(nm));
-                                break;
-                            case 2:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "sd");
-                                break;
-                            case 3:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "hs");
-                                break;
-                            case 4:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "id");
-                                break;
-                            case 5:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "shs");
-                                break;
+                    System.out.println("\n===== RESULTADOS COMPARATIVOS =====");
 
-                            case 6:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "bs");
-                                break;
-                            case 7:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "ss");
-                                break;
-                            case 8:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "qs");
-                                break;
+                    Resultado[] resultados = ManipularArquivo.ordenarArquivoTodos(nm);
+                    String[] nomes = ManipularArquivo.getNomesAlgoritmos();
 
-                            case 9:
-                                System.out.println("\n===== RESULTADOS COMPARATIVOS =====");
-                                String[] algoritmos = { "sd", "hs", "id", "bs", "ss", "shs", "qs" };
+                    if (resultados == null || resultados.length == 0) {
+                        System.out.println("Não foi possível gerar resultados (arquivo vazio ou erro de leitura).");
+                    } else {
+                        System.out.printf("%-15s | %-15s | %-15s | %-15s\n",
+                                "Algoritmo", "Comparações", "Movimentações", "Tempo(ns)");
+                        System.out.println("----------------------------------------------------------------------");
 
-                                System.out.printf("%-15s | %-12s | %-15s | %-12s\n",
-                                        "Algoritmo", "Comparações", "Movimentações", "Tempo(ns)");
-                                System.out.println(
-                                        "-----------------------------------------------------------------------");
-
-                                for (String tipo : algoritmos) {
-                                    Resultado r = ManipularArquivo.ordenarArquivo(nm, tipo);
-                                    if (r != null) {
-                                        System.out.printf("%-15s | %-12d | %-15d | %-12d\n",
-                                                r.nomeAlgoritmo, r.comparacoes, r.movimentacoes, r.tempo);
-                                    }
-                                }
-                                break;
-
-                            default:
-                                System.out.println("Opção inválida.");
-                                break;
+                        for (int idx = 0; idx < resultados.length; idx++) {
+                            Resultado r = resultados[idx];
+                            System.out.printf("%-15s | %-15d | %-15d | %-15d\n",
+                                    nomes[idx], r.comparacoes, r.movimentacoes, r.tempo);
                         }
 
-                        /*
-                         * if (!resultado.isEmpty()) {
-                         * System.out.println(resultado + "\n");
-                         * }
-                         */
-
-                    } while (escolha != 9);
+                        System.out.println("\n===== VETOR ORDENADO =====");
+                        for (int num : resultados[0].numerosOrdenados) {
+                            System.out.print(num + " | ");
+                        }
+                        System.out.println("\n");
+                    }
                     break;
 
                 case 3:
