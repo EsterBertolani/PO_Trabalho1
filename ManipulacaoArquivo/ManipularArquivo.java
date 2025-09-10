@@ -16,10 +16,6 @@ public class ManipularArquivo {
     private static final String[] NOMES_ALGORITMOS = { "Seleção Direta", "HeapSort", "Inserção Direta",
             "BubbleSort", "ShakerSort", "ShellSort", "QuickSort" };
 
-    public static String[] getNomesAlgoritmos() {
-        return NOMES_ALGORITMOS.clone();
-    }
-
     public static int[] gerarNumeros(int qtdNum) {
         int[] numeros = new int[qtdNum];
         for (int i = 0; i < qtdNum; i++) {
@@ -40,7 +36,7 @@ public class ManipularArquivo {
         }
     }
 
-    public static String toString(int[] numeros) {
+    private static String toString(int[] numeros) {
         StringBuilder msg = new StringBuilder("\nNúmeros: ");
         for (int i : numeros) {
             msg.append(i).append(" | ");
@@ -90,7 +86,7 @@ public class ManipularArquivo {
         return numeros;
     }
 
-    public static Resultado[] ordenarArquivoTodos(String nomeArquivo) {
+    public static Resultado[] ordenarArquivo(String nomeArquivo) {
         int tamanho = tamArquivo(nomeArquivo);
 
         if (tamanho == 0)
@@ -144,7 +140,8 @@ public class ManipularArquivo {
                     break;
             }
 
-            resultados[k] = new Resultado(ord.comparacoes, ord.movimentacoes, ord.tempoExecucao, copiaChaves(itens));
+            resultados[k] = new Resultado(ord.comparacoes, ord.movimentacoes, ord.tempoExecucao, NOMES_ALGORITMOS[k],
+                    copiaChaves(itens));
         }
 
         return resultados;

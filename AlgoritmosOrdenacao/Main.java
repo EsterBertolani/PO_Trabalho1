@@ -11,20 +11,21 @@ public class Main {
         String nm = "";
 
         do {
-            System.out.println("===== MENU PRINCIPAL =====\n"
-                    + " 1. Gerar e Gravar Arquivo com Números\n"
-                    + " 2. Executar Algoritmos de Ordenação\n"
-                    + " 3. Sair\n"
-                    + "==================================\n"
-                    + "Escolha uma opção:");
+            System.out.println("===== MENU PRINCIPAL =====");
+            System.out.println(" 1. Gerar e Gravar Arquivo com Números");
+            System.out.println(" 2. Executar Algoritmos de Ordenação");
+            System.out.println(" 3. Sair");
+            System.out.println("==================================");
+            System.out.print("Escolha uma opção: ");
             opcao = scan.nextInt();
 
             switch (opcao) {
                 case 1:
-                    System.out.println("Digite a quantidade de números que deseja no arquivo: ");
+                    // Seu código para gerar e gravar arquivos (não precisa ser alterado)
+                    System.out.print("Digite a quantidade de números que deseja no arquivo: ");
                     int n = scan.nextInt();
 
-                    System.out.println("Digite o nome do arquivo: ");
+                    System.out.print("Digite o nome do arquivo: ");
                     String nome = scan.next();
 
                     int[] numeros = ManipularArquivo.gerarNumeros(n);
@@ -33,47 +34,72 @@ public class Main {
                     break;
 
                 case 2:
-                    System.out.println("Digite o nome do arquivo: ");
+                    System.out.print("Digite o nome do arquivo: ");
                     nm = scan.next();
 
+                    // Chama o método que executa os algoritmos e retorna os resultados
                     System.out.println(ManipularArquivo.lerArquivo(nm));
 
-                    System.out.println("\n===== RESULTADOS COMPARATIVOS =====");
+                    System.out.println("\n====== RESULTADOS COMPARATIVOS ======");
 
-                    Resultado[] resultados = ManipularArquivo.ordenarArquivoTodos(nm);
-                    String[] nomes = ManipularArquivo.getNomesAlgoritmos();
+                    Resultado[] resultados = ManipularArquivo.ordenarArquivo(nm);
 
-                    if (resultados == null || resultados.length == 0) {
-                        System.out.println("Não foi possível gerar resultados (arquivo vazio ou erro de leitura).");
-                    } else {
-                        System.out.printf("%-15s | %-15s | %-15s | %-15s\n",
-                                "Algoritmo", "Comparações", "Movimentações", "Tempo(ns)");
-                        System.out.println("----------------------------------------------------------------------");
+                    if (resultados.length > 0) {
 
-                        for (int idx = 0; idx < resultados.length; idx++) {
-                            Resultado r = resultados[idx];
-                            System.out.printf("%-15s | %-15d | %-15d | %-15d\n",
-                                    nomes[idx], r.comparacoes, r.movimentacoes, r.tempo);
-                        }
-
-                        System.out.println("\n===== VETOR ORDENADO =====");
+                        System.out.println("\n ===== VETOR ORDENADO =====");
                         for (int num : resultados[0].numerosOrdenados) {
                             System.out.print(num + " | ");
                         }
                         System.out.println("\n");
+
+                        // Quadro 1: Comparações
+                        System.out.println("\nQuadro Comparativo - Número de Comparações");
+                        System.out.println("-------------------------------------------");
+                        System.out.printf("%-15s | %15s\n", "Algoritmo", "Comparações");
+                        System.out.println("-------------------------------------------");
+
+                        for (Resultado resultado : resultados) {
+                            System.out.printf("%-15s | %15d\n", resultado.getNomeAlgoritmo(),
+                                    resultado.getComparacoes());
+                        }
+
+                        // Quadro 2: Movimentações
+                        System.out.println("\nQuadro Comparativo - Número de Movimentações");
+                        System.out.println("-------------------------------------------");
+                        System.out.printf("%-15s | %15s\n", "Algoritmo", "Movimentações");
+                        System.out.println("-------------------------------------------");
+
+                        for (Resultado resultado : resultados) {
+                            System.out.printf("%-15s | %15d\n", resultado.getNomeAlgoritmo(),
+                                    resultado.getMovimentacoes());
+                        }
+
+                        // Quadro 3: Tempo de Execução
+                        System.out.println("\nQuadro Comparativo - Tempo de Execução (ns)");
+                        System.out.println("-------------------------------------------");
+                        System.out.printf("%-15s | %15s\n", "Algoritmo", "Tempo (ns)");
+                        System.out.println("-------------------------------------------");
+
+                        for (Resultado resultado : resultados) {
+                            System.out.printf("%-15s | %15d\n", resultado.getNomeAlgoritmo(), resultado.getTempo());
+                        }
+
+                    } else {
+                        System.out.println("Erro ao executar os algoritmos ou arquivo não encontrado.");
                     }
+
                     break;
 
                 case 3:
-                    System.out.println("Programa finalizado.");
+                    System.out.println("Saindo...");
                     break;
 
                 default:
-                    System.out.println("Opção inválida.");
+                    System.out.println("Opção inválida!");
                     break;
             }
-        } while (opcao != 3);
 
+        } while (opcao != 3);
         scan.close();
     }
 }
