@@ -9,6 +9,5 @@ public class Resultado {
         this.comparacoes = comp;
         this.movimentacoes = mov;
         this.tempo = temp;
-
     }
 }

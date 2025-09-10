@@ -2,258 +2,264 @@ package AlgoritmosOrdenacao;
 
 public class Ordenar {
 
-    // ---------------- INSERÇÃO DIRETA ----------------
-    public static Resultado insercaoDireta(Item[] vetor) {
-        Item[] v = vetor.clone();
-        long comparacoes = 0, movimentacoes = 0;
-        long inicio = System.nanoTime(); // marca tempo
+    private Item[] vetor;
+    private int nElem;
 
-        for (int i = 1; i < v.length; i++) {
-            Item temp = v[i];
-            movimentacoes++; // movimentação: salvar chave temporária
-            int j = i - 1;
-            while (j >= 0) {
-                comparacoes++; // comparação: testar v[j] > temp
-                if (v[j].getChave() > temp.getChave()) {
-                    v[j + 1] = v[j];
-                    movimentacoes++; // movimentação: deslocamento
-                    j--;
-                } else
-                    break;
-            }
-            v[j + 1] = temp;
-            movimentacoes++; // movimentação: inserção do temp
-        }
+    public long comparacoes = 0;
+    public long movimentacoes = 0;
+    public long tempoExecucao = 0;
 
-        long fim = System.nanoTime(); // marca tempo
-        return new Resultado(comparacoes, movimentacoes, fim - inicio);
+    public Ordenar(Item[] vetor) {
+        this.vetor = vetor;
+        this.nElem = vetor.length;
     }
 
-    // ---------------- SELEÇÃO DIRETA ----------------
-    public static Resultado selecaoDireta(Item[] vetor) {
-        Item[] v = vetor.clone();
-        long comparacoes = 0, movimentacoes = 0;
+    // --------------- SELEÇÃO DIRETA ---------------
+    public void selecaoDireta() {
+        comparacoes = 0;
+        movimentacoes = 0;
         long inicio = System.nanoTime();
 
-        for (int i = 0; i < v.length - 1; i++) {
-            int minimo = i;
-            for (int j = i + 1; j < v.length; j++) {
-                comparacoes++; // comparação: v[j] < v[minimo]
-                if (v[j].getChave() < v[minimo].getChave()) {
+        int i, j, minimo;
+        Item temp;
+        for (i = 0; i < this.nElem - 1; i++) {
+            minimo = i;
+            for (j = i + 1; j < this.nElem; j++) {
+                comparacoes++;
+                if (this.vetor[j].getChave() < this.vetor[minimo].getChave())
                     minimo = j;
-                }
             }
-            if (minimo != i) {
-                Item temp = v[minimo];
-                v[minimo] = v[i];
-                v[i] = temp;
-                movimentacoes += 3; // movimentação: troca
-            }
+            temp = this.vetor[minimo];
+            this.vetor[minimo] = this.vetor[i];
+            this.vetor[i] = temp;
+            movimentacoes += 3; // cada troca envolve 3 movimentações
         }
 
         long fim = System.nanoTime();
-        return new Resultado(comparacoes, movimentacoes, fim - inicio);
+        tempoExecucao = fim - inicio;
     }
 
-    // ---------------- BUBBLE SORT ----------------
-    public static Resultado bubbleSort(Item[] vetor) {
-        Item[] v = vetor.clone();
-        long comparacoes = 0, movimentacoes = 0;
+    // --------------- HEAPSORT ---------------
+    public void heapSort() {
+        comparacoes = 0;
+        movimentacoes = 0;
         long inicio = System.nanoTime();
 
-        int n = v.length - 1;
+        int dir = nElem - 1;
+        int esq = (dir - 1) / 2;
+        Item temp;
+
+        while (esq >= 0)
+            refazHeap(esq--, this.nElem - 1);
+
+        while (dir > 0) {
+            temp = this.vetor[0];
+            this.vetor[0] = this.vetor[dir];
+            this.vetor[dir--] = temp;
+            movimentacoes += 3; // troca
+            refazHeap(0, dir);
+        }
+
+        long fim = System.nanoTime();
+        tempoExecucao = fim - inicio;
+    }
+
+    private void refazHeap(int esq, int dir) {
+        int i = esq;
+        int MaiorFolha = 2 * i + 1;
+        Item raiz = this.vetor[i];
+        boolean heap = false;
+
+        while ((MaiorFolha <= dir) && (!heap)) {
+            comparacoes++;
+            if (MaiorFolha < dir) {
+                comparacoes++;
+                if (this.vetor[MaiorFolha].getChave() < this.vetor[MaiorFolha + 1].getChave())
+                    MaiorFolha++;
+            }
+            comparacoes++;
+            if (raiz.getChave() < this.vetor[MaiorFolha].getChave()) {
+                this.vetor[i] = this.vetor[MaiorFolha];
+                i = MaiorFolha;
+                MaiorFolha = 2 * i + 1;
+                movimentacoes++;
+            } else
+                heap = true;
+        }
+        this.vetor[i] = raiz;
+        movimentacoes++;
+    }
+
+    // --------------- INSERÇÃO DIRETA ---------------
+    public void insercaoDireta() {
+        comparacoes = 0;
+        movimentacoes = 0;
+        long inicio = System.nanoTime();
+
+        int i, j;
+        Item temp;
+        for (i = 1; i < this.nElem; i++) {
+            temp = this.vetor[i];
+            j = i - 1;
+
+            comparacoes++;
+            while ((j >= 0) && (this.vetor[j].getChave() > temp.getChave())) {
+                comparacoes++;
+                this.vetor[j + 1] = this.vetor[j--];
+                movimentacoes++;
+            }
+            this.vetor[j + 1] = temp;
+            movimentacoes++;
+        }
+
+        long fim = System.nanoTime();
+        tempoExecucao = fim - inicio;
+    }
+
+    // --------------- SHELLSORT ---------------
+    public void shellSort() {
+        comparacoes = 0;
+        movimentacoes = 0;
+        long inicio = System.nanoTime();
+
+        int i, j, h;
+        Item temp;
+        h = 1;
         do {
-            int i = 0;
-            for (int j = 0; j < n; j++) {
-                comparacoes++; // comparação: v[j] > v[j+1]
-                if (v[j].getChave() > v[j + 1].getChave()) {
-                    Item temp = v[j];
-                    v[j] = v[j + 1];
-                    v[j + 1] = temp;
-                    movimentacoes += 3; // movimentação: troca
+            h = 3 * h + 1;
+        } while (h < this.nElem);
+
+        do {
+            h = h / 3;
+            for (i = h; i < this.nElem; i++) {
+                temp = this.vetor[i];
+                j = i;
+                comparacoes++;
+                while (this.vetor[j - h].getChave() > temp.getChave()) {
+                    comparacoes++;
+                    this.vetor[j] = this.vetor[j - h];
+                    j -= h;
+                    movimentacoes++;
+                    if (j < h)
+                        break;
+                }
+                this.vetor[j] = temp;
+                movimentacoes++;
+            }
+        } while (h != 1);
+
+        long fim = System.nanoTime();
+        tempoExecucao = fim - inicio;
+    }
+
+    // --------------- BUBBLESORT ---------------
+    public void bubblesort() {
+        comparacoes = 0;
+        movimentacoes = 0;
+        long inicio = System.nanoTime();
+
+        int n, i, j;
+        Item temp;
+        n = this.nElem - 1;
+        do {
+            i = 0;
+            for (j = 0; j < n; j++) {
+                comparacoes++;
+                if (this.vetor[j].getChave() > this.vetor[j + 1].getChave()) {
+                    temp = this.vetor[j];
+                    this.vetor[j] = this.vetor[j + 1];
+                    this.vetor[j + 1] = temp;
                     i = j;
+                    movimentacoes += 3; // troca
                 }
             }
             n = i;
         } while (n >= 1);
 
         long fim = System.nanoTime();
-        return new Resultado(comparacoes, movimentacoes, fim - inicio);
+        tempoExecucao = fim - inicio;
     }
 
-    // ---------------- SHAKER SORT ----------------
-    public static Resultado shakerSort(Item[] vetor) {
-        Item[] v = vetor.clone();
-        long comparacoes = 0, movimentacoes = 0;
+    // --------------- SHAKESORT ---------------
+    public void shakesort() {
+        comparacoes = 0;
+        movimentacoes = 0;
         long inicio = System.nanoTime();
 
-        int esq = 1, dir = v.length - 1, j = dir;
+        int esq, dir, i, j;
+        Item temp;
+        esq = 1;
+        dir = this.nElem - 1;
+        j = dir;
         do {
-            for (int i = dir; i >= esq; i--) {
-                comparacoes++; // comparação: v[i-1] > v[i]
-                if (v[i - 1].getChave() > v[i].getChave()) {
-                    Item temp = v[i];
-                    v[i] = v[i - 1];
-                    v[i - 1] = temp;
-                    movimentacoes += 3; // movimentação: troca
+            for (i = dir; i >= esq; i--) {
+                comparacoes++;
+                if (this.vetor[i - 1].getChave() > this.vetor[i].getChave()) {
+                    temp = this.vetor[i];
+                    this.vetor[i] = this.vetor[i - 1];
+                    this.vetor[i - 1] = temp;
                     j = i;
+                    movimentacoes += 3;
                 }
             }
             esq = j + 1;
-            for (int i = esq; i <= dir; i++) {
-                comparacoes++; // comparação: v[i-1] > v[i]
-                if (v[i - 1].getChave() > v[i].getChave()) {
-                    Item temp = v[i];
-                    v[i] = v[i - 1];
-                    v[i - 1] = temp;
-                    movimentacoes += 3;
+            for (i = esq; i <= dir; i++) {
+                comparacoes++;
+                if (this.vetor[i - 1].getChave() > this.vetor[i].getChave()) {
+                    temp = this.vetor[i];
+                    this.vetor[i] = this.vetor[i - 1];
+                    this.vetor[i - 1] = temp;
                     j = i;
+                    movimentacoes += 3;
                 }
             }
             dir = j - 1;
         } while (esq <= dir);
 
         long fim = System.nanoTime();
-        return new Resultado(comparacoes, movimentacoes, fim - inicio);
+        tempoExecucao = fim - inicio;
     }
 
-    // ---------------- SHELL SORT ----------------
-    public static Resultado shellSort(Item[] vetor) {
-        Item[] v = vetor.clone();
-        long comparacoes = 0, movimentacoes = 0;
+    // --------------- QUICKSORT ---------------
+    public void quicksort() {
+        comparacoes = 0;
+        movimentacoes = 0;
         long inicio = System.nanoTime();
 
-        int h = 1;
-        do {
-            h = 3 * h + 1;
-        } while (h < v.length);
-
-        do {
-            h /= 3;
-            for (int i = h; i < v.length; i++) {
-                Item temp = v[i];
-                movimentacoes++; // salvar chave temporária
-                int j = i;
-                while (j >= h) {
-                    comparacoes++; // comparação: v[j-h] > temp
-                    if (v[j - h].getChave() > temp.getChave()) {
-                        v[j] = v[j - h];
-                        movimentacoes++; // movimentação: deslocamento
-                        j -= h;
-                    } else
-                        break;
-                }
-                v[j] = temp;
-                movimentacoes++; // inserção
-            }
-        } while (h > 1);
+        ordena(0, this.nElem - 1);
 
         long fim = System.nanoTime();
-        return new Resultado(comparacoes, movimentacoes, fim - inicio);
+        tempoExecucao = fim - inicio;
     }
 
-    // ---------------- HEAP SORT ----------------
-    public static Resultado heapSort(Item[] vetor) {
-        Item[] v = vetor.clone();
-        long comparacoes = 0, movimentacoes = 0;
-        long inicio = System.nanoTime();
-
-        int n = v.length;
-
-        // Construção do heap
-        for (int esq = (n / 2) - 1; esq >= 0; esq--) {
-            long[] aux = refazHeap(v, esq, n - 1);
-            comparacoes += aux[0];
-            movimentacoes += aux[1];
-        }
-
-        for (int dir = n - 1; dir > 0; dir--) {
-            Item temp = v[0];
-            v[0] = v[dir];
-            v[dir] = temp;
-            movimentacoes += 3; // movimentação: troca raiz com último
-            long[] aux = refazHeap(v, 0, dir - 1);
-            comparacoes += aux[0];
-            movimentacoes += aux[1];
-        }
-
-        long fim = System.nanoTime();
-        return new Resultado(comparacoes, movimentacoes, fim - inicio);
-    }
-
-    // método auxiliar para HeapSort
-    private static long[] refazHeap(Item[] v, int esq, int dir) {
-        long comparacoes = 0, movimentacoes = 0;
-        int i = esq;
-        int maiorFilho = 2 * i + 1;
-        Item raiz = v[i];
-
-        boolean heap = false;
-        while (maiorFilho <= dir && !heap) {
-            if (maiorFilho < dir) {
-                comparacoes++; // comparação entre filhos
-                if (v[maiorFilho].getChave() < v[maiorFilho + 1].getChave()) {
-                    maiorFilho++;
-                }
-            }
-            comparacoes++; // comparação raiz com maior filho
-            if (raiz.getChave() < v[maiorFilho].getChave()) {
-                v[i] = v[maiorFilho];
-                movimentacoes++; // movimentação: sobe filho
-                i = maiorFilho;
-                maiorFilho = 2 * i + 1;
-            } else {
-                heap = true;
-            }
-        }
-        v[i] = raiz;
-        movimentacoes++; // reposiciona raiz
-        return new long[] { comparacoes, movimentacoes };
-    }
-
-    // ---------------- QUICK SORT ----------------
-
-    public static Resultado quickSort(Item[] vetor) {
-        Item[] v = vetor.clone(); // Clona o vetor original para não alterá-lo
-        Resultado r = new Resultado(0, 0, 0); // Inicializa o objeto para armazenar resultados
-        long inicio = System.nanoTime(); // Marca o tempo de início
-
-        quickSortRec(v, 0, v.length - 1, r); // Chamada recursiva
-
-        long fim = System.nanoTime(); // Marca o tempo de fim
-        r.tempo = fim - inicio; // Calcula o tempo total
-        return r;
-    }
-
-    private static void quickSortRec(Item[] v, int esq, int dir, Resultado r) {
-        int i = esq, j = dir;
-        int pivo = v[(i + j) / 2].getChave(); // Escolhe o pivô como o elemento do meio
-
+    private void ordena(int esq, int dir) {
+        int pivo, i = esq, j = dir;
+        Item temp;
+        pivo = this.vetor[(i + j) / 2].getChave();
         do {
-            while (v[i].getChave() < pivo) {
-                r.comparacoes++; // Conta a comparação
+            comparacoes++;
+            while (this.vetor[i].getChave() < pivo) {
+                comparacoes++;
                 i++;
             }
-            while (v[j].getChave() > pivo) {
-                r.comparacoes++; // Conta a comparação
+            while (this.vetor[j].getChave() > pivo) {
+                comparacoes++;
                 j--;
             }
             if (i <= j) {
-                // Troca os elementos
-                Item temp = v[i];
-                v[i] = v[j];
-                v[j] = temp;
-                r.movimentacoes += 3; // Conta como 3 movimentações (leitura, leitura, escrita)
+                temp = this.vetor[i];
+                this.vetor[i] = this.vetor[j];
+                this.vetor[j] = temp;
                 i++;
                 j--;
+                movimentacoes += 3;
             }
         } while (i <= j);
-
-        // Chamada recursiva para as subpartes
-        if (esq < j)
-            quickSortRec(v, esq, j, r);
-        if (i < dir)
-            quickSortRec(v, i, dir, r);
+        if (esq < j) {
+            ordena(esq, j);
+        }
+        if (dir > i) {
+            ordena(i, dir);
+        }
     }
-
 }

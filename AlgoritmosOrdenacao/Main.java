@@ -52,10 +52,10 @@ public class Main {
                                 + " Escolha uma opção: ");
                         escolha = scan.nextInt();
 
-                        String resultado = "";
+                        Resultado resultado;
                         switch (escolha) {
                             case 1:
-                                resultado = ManipularArquivo.lerArquivo(nm);
+                                System.out.println(ManipularArquivo.lerArquivo(nm));
                                 break;
                             case 2:
                                 resultado = ManipularArquivo.ordenarArquivo(nm, "sd");
@@ -67,27 +67,47 @@ public class Main {
                                 resultado = ManipularArquivo.ordenarArquivo(nm, "id");
                                 break;
                             case 5:
+                                resultado = ManipularArquivo.ordenarArquivo(nm, "shs");
+                                break;
+
+                            case 6:
                                 resultado = ManipularArquivo.ordenarArquivo(nm, "bs");
                                 break;
-                            case 6:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "ss");
-                                break;
                             case 7:
-                                resultado = ManipularArquivo.ordenarArquivo(nm, "sh");
+                                resultado = ManipularArquivo.ordenarArquivo(nm, "ss");
                                 break;
                             case 8:
                                 resultado = ManipularArquivo.ordenarArquivo(nm, "qs");
                                 break;
+
                             case 9:
+                                System.out.println("\n===== RESULTADOS COMPARATIVOS =====");
+                                String[] algoritmos = { "sd", "hs", "id", "bs", "ss", "shs", "qs" };
+
+                                System.out.printf("%-15s | %-12s | %-15s | %-12s\n",
+                                        "Algoritmo", "Comparações", "Movimentações", "Tempo(ns)");
+                                System.out.println(
+                                        "-----------------------------------------------------------------------");
+
+                                for (String tipo : algoritmos) {
+                                    Resultado r = ManipularArquivo.ordenarArquivo(nm, tipo);
+                                    if (r != null) {
+                                        System.out.printf("%-15s | %-12d | %-15d | %-12d\n",
+                                                r.nomeAlgoritmo, r.comparacoes, r.movimentacoes, r.tempo);
+                                    }
+                                }
                                 break;
+
                             default:
                                 System.out.println("Opção inválida.");
                                 break;
                         }
 
-                        if (!resultado.isEmpty()) {
-                            System.out.println(resultado + "\n");
-                        }
+                        /*
+                         * if (!resultado.isEmpty()) {
+                         * System.out.println(resultado + "\n");
+                         * }
+                         */
 
                     } while (escolha != 9);
                     break;

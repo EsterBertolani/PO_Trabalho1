@@ -74,63 +74,142 @@ public class ManipularArquivo {
         }
     }
 
-    public static String ordenarArquivo(String nomeArquivo, String tipoOrdenacao) {
-        String erro = "Erro ao ler o arquivo: ";
-        int[] numeros = new int[tamArquivo(nomeArquivo)];
+    /*
+     * public static String ordenarArquivo(String nomeArquivo, String tipoOrdenacao)
+     * {
+     * String erro = "Erro ao ler o arquivo: ";
+     * int[] numeros = new int[tamArquivo(nomeArquivo)];
+     * 
+     * try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo)))
+     * {
+     * String linha;
+     * int i = 0;
+     * while ((linha = reader.readLine()) != null) {
+     * numeros[i] = Integer.parseInt(linha);
+     * i++;
+     * }
+     * 
+     * Item[] itens = new Item[numeros.length];
+     * for (int j = 0; j < numeros.length; j++) {
+     * itens[j] = new Item(numeros[j]);
+     * }
+     * 
+     * Ordenar ord = new Ordenar(itens);
+     * 
+     * switch (tipoOrdenacao.toLowerCase()) {
+     * case "sd":
+     * ord.selecaoDireta();
+     * break;
+     * 
+     * case "hs":
+     * ord.heapSort();
+     * break;
+     * 
+     * case "id":
+     * ord.insercaoDireta();
+     * break;
+     * 
+     * case "shs":
+     * ord.shellSort();
+     * break;
+     * 
+     * case "bs":
+     * ord.bubblesort();
+     * break;
+     * case "ss":
+     * ord.shakesort();
+     * break;
+     * 
+     * case "qs":
+     * ord.quicksort();
+     * break;
+     * default:
+     * return "Tipo de ordenação inválido!";
+     * }
+     * 
+     * for (int j = 0; j < itens.length; j++) {
+     * numeros[j] = itens[j].getChave();
+     * }
+     * 
+     * 
+     * 
+     * } catch (IOException e) {
+     * erro += e.getMessage();
+     * }
+     * 
+     * if (numeros.length > 0) {
+     * return toString(numeros);
+     * } else {
+     * return erro;
+     * }
+     * }
+     */
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo))) {
-            String linha;
-            int i = 0;
-            while ((linha = reader.readLine()) != null) {
-                numeros[i] = Integer.parseInt(linha);
-                i++;
-            }
+    /*
+     * public static Resultado ordenarArquivo(String nomeArquivo, String
+     * tipoOrdenacao) {
+     * int[] numeros = new int[tamArquivo(nomeArquivo)];
+     * 
+     * try (BufferedReader reader = new BufferedReader(new FileReader(nomeArquivo)))
+     * {
+     * String linha;
+     * int i = 0;
+     * while ((linha = reader.readLine()) != null) {
+     * numeros[i] = Integer.parseInt(linha);
+     * i++;
+     * }
+     * 
+     * Item[] itens = new Item[numeros.length];
+     * for (int j = 0; j < numeros.length; j++) {
+     * itens[j] = new Item(numeros[j]);
+     * }
+     * 
+     * Ordenar ord = new Ordenar(itens);
+     * String nomeAlgoritmo;
+     * 
+     * switch (tipoOrdenacao.toLowerCase()) {
+     * case "sd":
+     * ord.selecaoDireta();
+     * nomeAlgoritmo = "Seleção Direta";
+     * break;
+     * case "hs":
+     * ord.heapSort();
+     * nomeAlgoritmo = "HeapSort";
+     * break;
+     * case "id":
+     * ord.insercaoDireta();
+     * nomeAlgoritmo = "Inserção Direta";
+     * break;
+     * case "bs":
+     * ord.bubblesort();
+     * nomeAlgoritmo = "BubbleSort";
+     * break;
+     * case "ss":
+     * ord.shakesort();
+     * nomeAlgoritmo = "ShakerSort";
+     * break;
+     * case "shs":
+     * ord.shellSort();
+     * nomeAlgoritmo = "ShellSort";
+     * break;
+     * case "qs":
+     * ord.quicksort();
+     * nomeAlgoritmo = "QuickSort";
+     * break;
+     * default:
+     * return null;
+     * }
+     * 
+     * return new Resultado(nomeAlgoritmo, ord.comparacoes, ord.movimentacoes,
+     * ord.tempoExecucao);
+     * 
+     * } catch (IOException e) {
+     * System.out.println("Erro: " + e.getMessage());
+     * }
+     * 
+     * return null;
+     * }
+     */
 
-            Item[] itens = new Item[numeros.length];
-            for (int j = 0; j < numeros.length; j++) {
-                itens[j] = new Item(numeros[j]);
-            }
-
-            Resultado resultado;
-            switch (tipoOrdenacao.toLowerCase()) {
-                case "id":
-                    resultado = Ordenar.insercaoDireta(itens);
-                    break;
-                case "sd":
-                    resultado = Ordenar.selecaoDireta(itens);
-                    break;
-                case "bs":
-                    resultado = Ordenar.bubbleSort(itens);
-                    break;
-                case "ss":
-                    resultado = Ordenar.shakerSort(itens);
-                    break;
-                case "sh":
-                    resultado = Ordenar.shellSort(itens);
-                    break;
-                case "hs":
-                    resultado = Ordenar.heapSort(itens);
-                    break;
-                case "qs":
-                    resultado = Ordenar.quickSort(itens);
-                    break;
-                default:
-                    return "Tipo de ordenação inválido!";
-            }
-
-            for (int j = 0; j < itens.length; j++) {
-                numeros[j] = itens[j].getChave();
-            }
-
-            return toString(numeros) +
-                    "\nComparações: " + resultado.comparacoes +
-                    "\nMovimentações: " + resultado.movimentacoes +
-                    "\nTempo (ns): " + resultado.tempo;
-
-        } catch (IOException e) {
-            erro += e.getMessage();
-        }
-
-        return erro;
-    }
+    
 }
