@@ -243,10 +243,12 @@ public class Ordenar {
                 comparacoes++;
                 i++;
             }
+            comparacoes++;
             while (this.vetor[j].getChave() > pivo) {
                 comparacoes++;
                 j--;
             }
+            movimentacoes++;
             if (i <= j) {
                 movimentacoes += 3;
                 temp = this.vetor[i];
