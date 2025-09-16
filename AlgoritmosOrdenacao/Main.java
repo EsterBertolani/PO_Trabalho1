@@ -21,7 +21,6 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    // Seu código para gerar e gravar arquivos (não precisa ser alterado)
                     System.out.print("Digite a quantidade de números que deseja no arquivo: ");
                     int n = scan.nextInt();
 
@@ -37,7 +36,6 @@ public class Main {
                     System.out.print("Digite o nome do arquivo: ");
                     nm = scan.next();
 
-                    // Chama o método que executa os algoritmos e retorna os resultados
                     System.out.println(ManipularArquivo.lerArquivo(nm));
 
                     System.out.println("\n====== RESULTADOS COMPARATIVOS ======");

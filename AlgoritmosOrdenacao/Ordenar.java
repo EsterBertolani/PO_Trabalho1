@@ -32,7 +32,7 @@ public class Ordenar {
             temp = this.vetor[minimo];
             this.vetor[minimo] = this.vetor[i];
             this.vetor[i] = temp;
-            movimentacoes += 3;
+            movimentacoes++;
         }
 
         long fim = System.nanoTime();
@@ -144,7 +144,7 @@ public class Ordenar {
                         break;
                 }
                 this.vetor[j] = temp;
-                movimentacoes++;
+                // movimentacoes++;
             }
         } while (h != 1);
 
@@ -169,7 +169,7 @@ public class Ordenar {
                     temp = this.vetor[j];
                     this.vetor[j] = this.vetor[j + 1];
                     this.vetor[j + 1] = temp;
-                    movimentacoes += 3;
+                    movimentacoes++;
                     i = j;
                 }
             }
@@ -198,7 +198,7 @@ public class Ordenar {
                     temp = this.vetor[i];
                     this.vetor[i] = this.vetor[i - 1];
                     this.vetor[i - 1] = temp;
-                    movimentacoes += 3;
+                    movimentacoes++;
                     j = i;
 
                 }
@@ -210,7 +210,7 @@ public class Ordenar {
                     temp = this.vetor[i];
                     this.vetor[i] = this.vetor[i - 1];
                     this.vetor[i - 1] = temp;
-                    movimentacoes += 3;
+                    movimentacoes++;
                     j = i;
                 }
             }
@@ -248,12 +248,12 @@ public class Ordenar {
                 comparacoes++;
                 j--;
             }
-            movimentacoes++;
+
             if (i <= j) {
-                movimentacoes += 3;
                 temp = this.vetor[i];
                 this.vetor[i] = this.vetor[j];
                 this.vetor[j] = temp;
+                movimentacoes++;
                 i++;
                 j--;
 
